@@ -1,10 +1,12 @@
-#!/usr/bin
+#!/usr/bin/env bash
 
 cd $HOME;
+rm -dr $HOME/ucr
 git clone https://github.com/just4kick/ucr.git
 cd $HOME/ucr;
 
-ln -s usr $HOME/.local/bin/ucr
-ln -s ucrupdate $HOME/.local/bin
+touch $HOME/.local/bin/ucr 
+ln -s $HOME/ucr/ucr $HOME/.local/bin/ucr
+ln -s $HOME/ucr/ucrupdate $HOME/.local/bin
 
 
