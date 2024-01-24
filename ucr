@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+
+
+const fs = require('fs');
+const { exec } = require('child_process');
+const exemap = './exemap.json';
+//will add ucr config in future where you can config ucr behaviour itself.
+//js object of config can be better in term of speed but complexity of editing config will increased 
+fs.readFile(exemap, 'utf8', (err, data) => {
+    if (err) {
+      console.error(`Error reading config file: ${err.message}`);
+      return;
+    }
+  
+    try {
+      const jsonData = JSON.parse(data);
+            const filename=process.argv[2];// does not support access by path
+            // const filepath=process.argv[3];//futrure update
+            if(filename!==undefined){
+            const filenamewithoutext=filename.split(".")[0]
+            const fileext=filename.split(".")[1].toLowerCase();
+            let regexfilename = new RegExp("\\b" + "fileName" + "\\b", 'g');
+            let regexfilenamewithoutext = new RegExp("\\b" + "fileNameWithoutExt" + "\\b", 'g');
+            let regexdir = new RegExp("\\b" + "dir" + "\\b", 'g');
+                    //replace $fileName $filenamewithoutext and $dir
+                 const cmd=jsonData[fileext].replace(regexfilename,filename).replace(regexfilenamewithoutext,filenamewithoutext).replace(regexdir,__dirname).replace(/\$/g,"");
+                // console.log(cmd) //for debugging
+                exec(cmd, (error, stdout, stderr) => {
+                    if (error) {
+                        console.error(`ERROR: ${error.message}`);
+                        return;
+                    }
+                    if (stderr) {
+                        console.error(`stdERROR: ${stderr}`);
+                        return;
+                    }
+                
+                    console.log(`${stdout}`);
+                });
+                
+            }else{
+                console.log("Version 1.0.0 dev")
+                console.log("Supported Languages")
+                console.log("javascipt, java, c, zig, cpp, objective c, php, python3, perl, perl6, ruby, go, rust, swift, dart, typescript, lua");
+            }
+
+
+    } catch (jsonError) {
+      console.error(`${jsonError.message}`);
+    }
+  });
+
+
