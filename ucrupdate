@@ -1,13 +1,10 @@
 #!/usr/bin
 
 cd $HOME;
-git clone 
+git clone https://github.com/just4kick/ucr.git
 cd $HOME/ucr;
 
-cp ucr $HOME/.local/bin
-cp exemap.json $HOME/.local/bin
-cp ucrupdate $HOME/.local/bin
+ln -s usr $HOME/.local/bin/ucr
+ln -s ucrupdate $HOME/.local/bin
 
-cd $HOME 
-rm -dr $HOME/ucr
 
