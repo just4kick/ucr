@@ -3,7 +3,7 @@
 
 const fs = require('fs');
 const { exec } = require('child_process');
-const exemap = './exemap.json';
+const exemap = '/home/sumit/.customScript/exemap.json';
 //will add ucr config in future where you can config ucr behaviour itself.
 //js object of config can be better in term of speed but complexity of editing config will increased 
 fs.readFile(exemap, 'utf8', (err, data) => {
@@ -19,11 +19,27 @@ fs.readFile(exemap, 'utf8', (err, data) => {
             if(filename!==undefined){
             const filenamewithoutext=filename.split(".")[0]
             const fileext=filename.split(".")[1].toLowerCase();
+            let location="";
+            const pwd = "pwd"
+
+            exec(pwd, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`ERROR: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`stdERROR: ${stderr}`);
+                    return;
+                }
+                location=stdout;
+            });
+
+
             let regexfilename = new RegExp("\\b" + "fileName" + "\\b", 'g');
             let regexfilenamewithoutext = new RegExp("\\b" + "fileNameWithoutExt" + "\\b", 'g');
             let regexdir = new RegExp("\\b" + "dir" + "\\b", 'g');
                     //replace $fileName $filenamewithoutext and $dir
-                 const cmd=jsonData[fileext].replace(regexfilename,filename).replace(regexfilenamewithoutext,filenamewithoutext).replace(regexdir,__dirname).replace(/\$/g,"");
+                 const cmd=jsonData[fileext].replace(regexfilename,filename).replace(regexfilenamewithoutext,filenamewithoutext).replace(regexdir,location).replace(/\$/g,"");
                 // console.log(cmd) //for debugging
                 exec(cmd, (error, stdout, stderr) => {
                     if (error) {

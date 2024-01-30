@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+
+const { exec } = require('child_process');
+
+// const h ="cd $dir && javac $fileName && java $fileNameWithoutExt"
+// let regex = new RegExp("\\b" + "fileName" + "\\b", 'g');
+// console.log(h.replace(regex,"jd.js").replace(/\$/g,""))
+const cmd = "pwd"
+
+exec(cmd, (error, stdout, stderr) => {
+    if (error) {
+        console.error(`ERROR: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.error(`stdERROR: ${stderr}`);
+        return;
+    }
+
+    console.log(`${stdout}`);
+});
